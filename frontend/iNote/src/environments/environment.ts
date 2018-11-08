@@ -3,7 +3,16 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  firebase : {
+    apiKey: "AIzaSyDAT1DBfsVjwgeOUHA3f4Xnn-DqgI0yxAI",
+    authDomain: "inote-official.firebaseapp.com",
+    databaseURL: "https://inote-official.firebaseio.com",
+    projectId: "inote-official",
+    storageBucket: "inote-official.appspot.com",
+    messagingSenderId: "1007095629353"
+  }
+
 };
 
 /*

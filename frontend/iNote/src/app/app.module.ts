@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -8,6 +9,13 @@ import { OverviewComponent } from './views/overview/overview.component';
 import { AddNewComponent } from './views/add-new/add-new.component';
 import { NavComponent } from './views/nav/nav.component';
 import { FooterComponent } from './views/footer/footer.component';
+
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+
+
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -19,8 +27,10 @@ import { FooterComponent } from './views/footer/footer.component';
     FooterComponent
   ],
   imports: [
-    BrowserModule,
-    AppRoutingModule
+    BrowserModule, FormsModule, ReactiveFormsModule,
+    AppRoutingModule,
+    AngularFireModule.initializeApp( environment.firebase ), AngularFireAuthModule,
+    AngularFirestoreModule
   ],
   providers: [],
   bootstrap: [AppComponent]
