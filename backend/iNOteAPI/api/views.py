@@ -40,66 +40,62 @@ class FetchVoiceText(APIView):
 
     def get(self, request, format=None):
         """
-        Return cloud storage URL for the sythesized text.
+        Return cloud storage URL for the speech sythesized text.
         """
-        print(request.GET.get('message',''))
+        message = request.GET.get('message','What can i do for you today?')
+        eventId = request.GET.get('id','121')
 
-        res = { 
+        eventSoundUrl = getMp3FromText(message, eventId)
+        if eventSoundUrl:
+            res = { 
             'status': 200,
-            'id': 1,
-            'url': "https://firebasestorage.googleapis.com/v0/b/inote-222016.appspot.com/o/sounds%2Fevent?alt=media&token=c27d3c79-47e1-42c5-a2f2-778f6ea605bc"
-        }
-        return Response(res)
+            'id': eventId,
+            'url': eventSoundUrl
+            }
+            return Response(res)
+        else:
+            return Response({'status': 500})
 
 
 
 
-# Create your views here.
-def index(request):
+# helper functions
+def getMp3FromText(msg, eventId):
     client = texttospeech.TextToSpeechClient()
+    eventFileName = 'event' + '_' + eventId + '.mp3'
 
-# Set the text input to be synthesized
-    synthesis_input = texttospeech.types.SynthesisInput(text="Hello, World!")
+    # Set the text input to be synthesized
+    synthesis_input = texttospeech.types.SynthesisInput(text=msg)
 
-# Build the voice request, select the language code ("en-US") and the ssml
-# voice gender ("neutral")
     voice = texttospeech.types.VoiceSelectionParams(
     language_code='en-US',
     ssml_gender=texttospeech.enums.SsmlVoiceGender.NEUTRAL)
 
-# Select the type of audio file you want returned
+    # Select the type of audio file you want returned
     audio_config = texttospeech.types.AudioConfig(
     audio_encoding=texttospeech.enums.AudioEncoding.MP3)
 
-# Perform the text-to-speech request on the text input with the selected
-# voice parameters and audio file type
+    # Perform the text-to-speech request on the text input with the selected
+    # voice parameters and audio file type
     response = client.synthesize_speech(synthesis_input, voice, audio_config)
-    print(type(response))
-    context={
-        "gSpeech": response.audio_content
-    }
 
-# # The response's audio_content is binary.
-    blob = Blob('sounds/event', bucket)
+    # # The response's audio_content is binary.
+    blob = Blob('sounds/' + eventFileName, bucket)
     
-    with open('./api/media/sounds/output.mp3', 'wb') as out:
+    with open('./api/media/sounds/' + eventFileName, 'wb') as out:
     # Write the response to the output file.
         out.write(response.audio_content)
         # blob.upload_from_file(out)
-        print('Audio content written to file "output.mp3"')
+        print('Audio content written to local file storage"')
 
-    # blob.upload_from_string(response.audio_content)
+    try:
+        blob.upload_from_filename( os.path.join(settings.BASE_DIR, 'api/media/sounds/' + eventFileName) )
+    except:
+        print("Sound clip uopload failed, please try again.")
+        return None
 
-    # with open('./api/media/sounds/output.mp3', 'rb') as sound:
-    #     blob.upload_from_file(sound)
-    #     print('Audio content written to file cloud storage')
-
-    #  Save file to firebase storage
-    # blob = bucket.blob()
-    blob.upload_from_filename( os.path.join(settings.BASE_DIR, 'api/media/sounds/output.mp3') )
-    print(  blob.public_url  )
-
-    return render(request, 'index.html', context)
+    blob.make_public()
+    return  blob.public_url 
 
 
 
