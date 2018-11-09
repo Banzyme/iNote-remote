@@ -1,6 +1,11 @@
 import os
 import firebase_admin
+
 from django.shortcuts import render
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import authentication, permissions
+
 from google.cloud import texttospeech
 from firebase_admin import credentials
 from firebase_admin import auth
@@ -17,6 +22,36 @@ fire_admin = firebase_admin.initialize_app(cred,{
     'storageBucket': 'inote-222016.appspot.com'
 })
 bucket = storage.bucket()
+
+
+# Env
+BLOB_ROOT = 'sounds/'
+SOUNDS_STORAGE_LOCAL = os.path.join(settings.BASE_DIR, 'api/media/sounds/')
+
+
+
+class FetchVoiceText(APIView):
+    """
+    Fetch speech syntehesis uri.
+    * No authentication required.
+    """
+    # authentication_classes = (authentication.TokenAuthentication,)
+    # permission_classes = (permissions.IsAdminUser,)
+
+    def get(self, request, format=None):
+        """
+        Return cloud storage URL for the sythesized text.
+        """
+        print(request.GET.get('message',''))
+
+        res = { 
+            'status': 200,
+            'id': 1,
+            'url': "https://firebasestorage.googleapis.com/v0/b/inote-222016.appspot.com/o/sounds%2Fevent?alt=media&token=c27d3c79-47e1-42c5-a2f2-778f6ea605bc"
+        }
+        return Response(res)
+
+
 
 
 # Create your views here.

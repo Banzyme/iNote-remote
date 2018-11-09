@@ -1,4 +1,4 @@
-#!/home/endeesa/PROJECTS/iNOteAPI/.venv/bin/python
+#!/home/endeesa/PROJECTS/iNote/backend/iNOteAPI/.venv/bin/python
 
 import sys
 import getopt
