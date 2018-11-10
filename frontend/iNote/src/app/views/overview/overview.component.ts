@@ -41,12 +41,20 @@ export class OverviewComponent implements OnInit {
   }
 
   playEventVoiceNote(e){
-    this.voiceService.fetchSpeechMp3(e.title, e.id).subscribe( (response: EventVoice)=>{
-      console.log(response);
-    } )
+    const text = 'Reminder, ' + e.title + ' in 5 minutes'
 
-    // this.audio.src = "../../../assets/sounds/button_1.mp3";
-    // this.audio.load();
-    // this.audio.play();
+    this.voiceService.fetchSpeechMp3(text, e.id).subscribe( (response: EventVoice)=>{
+      console.log(response);
+      if( response.status == 200){
+        this.audio.src = response.url;
+        this.audio.load();
+        this.audio.play();
+      }
+    }, (error)=>{
+      console.log(error);
+    });
+
+
+    
   }
 }

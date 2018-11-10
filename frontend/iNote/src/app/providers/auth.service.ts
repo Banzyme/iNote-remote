@@ -23,14 +23,11 @@ export class AuthService {
   googleSignIn() {
     return this.af_auth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
       .then(res => {
-        if (!res.user.emailVerified) {
-          // todo: send email verification link
-        }
+        this.isLoggedIn = true;
         this.router.navigate(['']);
       })
       .catch(error => {
-        // this.err_msg = error.message;
-        // this.openDialog();
+        console.log(error.message);
       });
   }
 
