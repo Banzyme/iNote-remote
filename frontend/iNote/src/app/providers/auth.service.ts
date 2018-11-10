@@ -21,14 +21,19 @@ export class AuthService {
   }
 
   googleSignIn() {
+    console.log("GoogleSignIN");
     return this.af_auth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
       .then(res => {
+        console.log(res);
         this.isLoggedIn = true;
-        this.router.navigate(['']);
+        this.router.navigateByUrl('/inote/home');
+        
       })
       .catch(error => {
         console.log(error.message);
       });
+
+     
   }
 
 

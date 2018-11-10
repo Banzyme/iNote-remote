@@ -1,40 +1,48 @@
 <div id="overview-container">
   <div id="header">
     <div class="jumbotron text-center jumbotron-fluid">
-      <h1 class="display-4">Welcome to iNote</h1>
-      <p class="lead">{{ today }}</p>
-      <hr class="my-4">
-      <div id="sign-up-btns">
-        <button class="btn btn-primary" routerLink="/inote/login">Get started</button>
+
+      <div *ngIf="!(auth.user|async)">
+        <h1 class="display-4">Welcome to iNote</h1>
+        <p class="lead">{{ today }}</p>
+        <hr class="my-4">
+        <div id="sign-up-btns">
+          <button class="btn btn-primary" routerLink="/inote/login">Get started</button>
+        </div>
+      </div>
+      <div *ngIf="auth.user | async as user">
+        <h1>Hello, {{ user.displayName }}!</h1>
+        <hr class="my-4">
+        <button class="btn btn-primary" (click)="auth.logout()">Logout</button>
       </div>
     </div>
   </div>
 
   <div class="container p-5" id="items">
 
-    <div *ngIf="(  auth.user | async ) || { } as user; else noLogin" class="list-group">
+    <div *ngIf="(auth.user | async ); else noLogin" class="list-group">
       <div class="row">
 
         <!-- Date mini card -->
         <div class="col-lg-3 pt-4">
           <span class="text-secondary">
-              {{ today | date: 'EEEE, MMMM d, y' }}
+            {{ today | date: 'EEEE, MMMM d, y' }}
           </span>
         </div>
         <!-- /Date -->
 
         <!-- Event card -->
         <div class="event-card col-lg-9">
-        <a id="{{event.id}}" *ngFor="let event of events" class="list-group-item list-group-item-action flex-column align-items-start active my-4">
-          <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">{{ event.title }}</h5>
-            <small>{{ event.venue }}</small>
-          </div>
-          <p class="mb-1 text-center">Coming up in <span>1 mins</span></p>
-          <button class="btn" (click)="playEventVoiceNote(event)" >Test me</button>
-          <small><b>With: </b>{{ event.attending }}</small>
-        </a>
-      </div>
+          <a id="{{event.id}}" *ngFor="let event of events" class="list-group-item list-group-item-action flex-column align-items-start active my-4">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1">{{ event.title }}</h5>
+              <small>{{ event.venue }}</small>
+            </div>
+            <p class="mb-1 text-center">Coming up in <span>1 mins</span></p>
+            <button class="btn" (click)="playEventVoiceNote(event)">Test me</button>
+            <small><b>With: </b>{{ event.attending }}</small>
+          </a>
+        </div>
 
 
       </div>
