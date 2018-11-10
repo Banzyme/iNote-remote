@@ -13,7 +13,7 @@
       <div *ngIf="auth.user | async as user">
         <h1>Hello, {{ user.displayName }}!</h1>
         <hr class="my-4">
-        <button class="btn btn-primary" (click)="auth.logout()">Logout</button>
+        <button class="btn btn-primary" routerLink="/inote/add">Add event</button>
       </div>
     </div>
   </div>
