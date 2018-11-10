@@ -37,7 +37,7 @@ export class AuthService {
         apiKey: 'AIzaSyCHPF4H7hK-MFVERc16sg1eoAlPk4FS8zY',
         clientId: '671395799930-g0npase9um4ad25dg1fdn0msigkndkgt.apps.googleusercontent.com',
         discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
-        scopes: ['https://www.googleapis.com/auth/calendar']
+        scope: 'https://www.googleapis.com/auth/calendar'
       })
 
       gapi.client.load('calendar', 'v3', () => console.log('loaded calendar'));
@@ -59,23 +59,23 @@ export class AuthService {
 
 
 
-  googleSignIn() {
-    console.log("GoogleSignIN");
-    return this.af_auth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
-      .then(res => {
-        console.log(res);
-        this.AccessToken = res.credential['accessToken'];
-        console.log("Access token: ", this.AccessToken);
-        this.isLoggedIn = true;
-        this.router.navigateByUrl('/inote/home');
+  // googleSignIn() {
+  //   console.log("GoogleSignIN");
+  //   return this.af_auth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
+  //     .then(res => {
+  //       console.log(res);
+  //       this.AccessToken = res.credential['accessToken'];
+  //       console.log("Access token: ", this.AccessToken);
+  //       this.isLoggedIn = true;
+  //       this.router.navigateByUrl('/inote/home');
 
-      })
-      .catch(error => {
-        console.log(error.message);
-      });
+  //     })
+  //     .catch(error => {
+  //       console.log(error.message);
+  //     });
 
 
-  }
+  // }
 
 
   logout() {
@@ -85,9 +85,6 @@ export class AuthService {
       .signOut()
       .then(() => { this.router.navigate(['']) })
   }
-
-
-
 
   async getCalendar() {
     const events = await gapi.client.calendar.events.list({
@@ -111,21 +108,21 @@ export class AuthService {
       start: {
         dateTime: this.hoursFromNow(2),
         timeZone: 'America/Los_Angeles'
-      }, 
+      },
       end: {
         dateTime: this.hoursFromNow(3),
         timeZone: 'America/Los_Angeles'
-      }, 
+      },
       summary: 'Have Fun!!!',
       description: 'Do some cool stuff and have a fun time doing it'
     })
-  
+
     await this.getCalendar();
   }
 
   // util functions
   // ... helper functions
 
-  hoursFromNow = (n) => new Date(Date.now() + n * 1000 * 60 * 60 ).toISOString();
+  hoursFromNow = (n) => new Date(Date.now() + n * 1000 * 60 * 60).toISOString();
 
 }

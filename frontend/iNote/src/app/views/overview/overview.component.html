@@ -69,6 +69,7 @@
   <div *ngFor="let item of auth.calenderItems">
       <h3>{{ item.summary }} - {{ item.status }}</h3>
       <p><em>Created {{ item.created }}</em></p>
+      <h1>{{ item.start.dateTime }}</h1>
       <p>{{ item.description }}</p>
   </div>
 </div>
