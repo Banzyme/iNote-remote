@@ -1,5 +1,8 @@
+from __future__ import print_function
+
 import os
 import firebase_admin
+import datetime
 
 from django.shortcuts import render
 from rest_framework.views import APIView
@@ -11,6 +14,9 @@ from firebase_admin import credentials
 from firebase_admin import auth
 from firebase_admin import storage
 from google.cloud.storage import Blob
+from googleapiclient.discovery import build
+from httplib2 import Http
+from oauth2client import file, client, tools
 
 
 from events import settings
@@ -27,6 +33,36 @@ bucket = storage.bucket()
 # Env
 BLOB_ROOT = 'sounds/'
 SOUNDS_STORAGE_LOCAL = os.path.join(settings.BASE_DIR, 'api/media/sounds/')
+
+
+# Calender api
+# def calenderEvents(request):
+#     SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
+
+#     store = file.Storage( os.path.join(settings.BASE_DIR, 'token.json') )
+#     creds = store.get()
+#     if not creds or creds.invalid:
+#         flow = client.flow_from_clientsecrets('credentials.json', SCOPES)
+#         creds = tools.run_flow(flow, store)
+#     service = build('calendar', 'v3', http=creds.authorize(Http()))
+
+#     # Call the Calendar API
+#     now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
+#     print('Getting the upcoming 10 events')
+#     events_result = service.events().list(calendarId='primary', timeMin=now,
+#                                         maxResults=10, singleEvents=True,
+#                                         orderBy='startTime').execute()
+#     events = events_result.get('items', [])
+
+#     if not events:
+#         print('No upcoming events found.')
+#     for event in events:
+#         start = event['start'].get('dateTime', event['start'].get('date'))
+#         print(start, event['summary'])
+
+#     return Response(events)
+# /Calender api
+
 
 
 

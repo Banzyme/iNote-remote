@@ -25,6 +25,8 @@ export class AuthService {
     return this.af_auth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
       .then(res => {
         console.log(res);
+        const AccessToken = res.credential['accessToken'];
+        console.log("Access token: ",  AccessToken );
         this.isLoggedIn = true;
         this.router.navigateByUrl('/inote/home');
         

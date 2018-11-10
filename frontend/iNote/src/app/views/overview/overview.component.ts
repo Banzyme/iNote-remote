@@ -18,9 +18,9 @@ class EventVoice{
 export class OverviewComponent implements OnInit {
   quedVoice = [];
   today = new Date();
-  time_1 = new Date(2018, 11,10,14, 20  );
+  time_1 = new Date(2018, 11,10,14, 30  );
   time_2 = new Date(2018, 11,10,14, 59);
-  time_3 = new Date(2018, 11,10,14, 15);
+  time_3 = new Date(2018, 11,10,14, 25);
 
   // Audio object
   audio = new Audio()
@@ -42,8 +42,7 @@ export class OverviewComponent implements OnInit {
    setInterval(){
      setInterval( ()=>{
       let now = new Date();
-      // this.quedVoice = this.events.concat([]);
-      for( let event in this.quedVoice ){
+      for( let event in this.quedVoice.filter( (e)=> e.dateTime.getHours() == now.getHours() ) ){
         
 
         let res = this.quedVoice[event].dateTime.getMinutes() - now.getMinutes();
