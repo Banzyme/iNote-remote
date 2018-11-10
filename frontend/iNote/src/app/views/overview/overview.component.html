@@ -12,7 +12,7 @@
 
   <div class="container p-5" id="items">
 
-    <div class="list-group">
+    <div *ngIf="(  auth.user | async ) || { } as user; else noLogin" class="list-group">
       <div class="row">
 
         <!-- Date mini card -->
@@ -39,6 +39,11 @@
 
       </div>
     </div>
+    <!-- /event list -->
+    <ng-template #noLogin>
+      <span class="text-danger">Click on get started to add new events.</span>
+    </ng-template>
+
   </div>
 
   <!-- /overview container -->

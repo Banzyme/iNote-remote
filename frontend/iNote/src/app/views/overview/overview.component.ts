@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TextToSpeechService } from '../../providers/text-to-speech.service';
+import { AuthService } from '../../providers/auth.service';
 
 
 class EventVoice{
@@ -30,7 +31,7 @@ export class OverviewComponent implements OnInit {
 
   ]
 
-  constructor(private voiceService: TextToSpeechService) { }
+  constructor(private voiceService: TextToSpeechService, public auth: AuthService) { }
 
   ngOnInit() {
     this.setInterval();
