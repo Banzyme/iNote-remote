@@ -3,7 +3,7 @@
     <!-- Event form -->
     <h2 class="text-center mt-4">Add new event</h2>
 
-    <form class="my-5">
+    <form class="my-5" [formGroup]="eventForm" (ngSubmit)="createEvent()">
         <div class="form-row">
           <div class="form-group col-md-6">
             <label for="title">Title</label>
@@ -27,7 +27,7 @@
             </label>
           </div>
         </div>
-        <button type="submit" class="btn btn-primary">Save event</button>
+        <button type="submit" class="btn btn-primary" [disabled]="!eventForm.valid">Save event</button>
         <button type="button" routerLink="/inote/home" class="btn btn-danger mx-1">Cancel</button>
       </form>
 
