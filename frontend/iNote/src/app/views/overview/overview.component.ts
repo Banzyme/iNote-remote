@@ -96,7 +96,8 @@ export class OverviewComponent implements OnInit {
    playEventVoiceNote(e){
     let text = 'Reminder, ' + e.summary + ' in 5 minutes.';
     if(e.attendees.length != 0){
-      text = text + "Participants, " + e.attendees.join(',');
+      let names = e.attendees.map( (person) => person.displayName )
+      text = text + "Participants, " + names.join(' ,');
     }
 
 
