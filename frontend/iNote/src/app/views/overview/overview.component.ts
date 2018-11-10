@@ -16,7 +16,8 @@ class EventVoice{
   styleUrls: ['./overview.component.scss']
 })
 export class OverviewComponent implements OnInit {
-  quedVoice = [];
+  quedVoice :any[];
+  calenderItems: any[];
   today = new Date();
   time_1 = new Date(2018, 11,10,14, 30  );
   time_2 = new Date(2018, 11,10,14, 59);
@@ -37,22 +38,39 @@ export class OverviewComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.setInterval();
-    this.quedVoice = Array.from(this.events);
+    
+    // this.quedVoice = Array.from( this.auth.calenderItems );
+
+    // this.auth.getCalendar()
+    //   .then( (calender)=>{
+    //     console.log("Returned cal items: ", calender);
+    //   });
+
+
+      // this.setInterval();
     
   }
 
-  async getEvents(){
-    await this.auth.getCalendar();
+  localRetrieve(){
+    this.auth.getCalendar()
+    .then( (calender)=>{
+      console.log("Returned cal items: ", calender);
+      this.quedVoice = Array.from( this.auth.calenderItems );
+
+      console.log( this.quedVoice[0].start.dateTime  )
+
+      this.setInterval();
+    });
   }
 
    setInterval(){
      setInterval( ()=>{
       let now = new Date();
-      for( let event in this.quedVoice.filter( (e)=> e.dateTime.getHours() == now.getHours() ) ){
+      for( let event in this.quedVoice.filter( (e)=> new Date(e.start.dateTime).getHours() == now.getHours() ) ){
         
 
-        let res = this.quedVoice[event].dateTime.getMinutes() - now.getMinutes();
+        let res = new Date(this.quedVoice[event].start.dateTime).getMinutes() - now.getMinutes();
+        console.log(res);
 
         if( Math.abs(res)<=5) {   /// Play voice not if time-delta < 5 mins
           console.log(res);
@@ -76,7 +94,11 @@ export class OverviewComponent implements OnInit {
   }
 
    playEventVoiceNote(e){
-    const text = 'Reminder, ' + e.title + ' in 5 minutes'
+    let text = 'Reminder, ' + e.summary + ' in 5 minutes.';
+    if(e.attendees.length != 0){
+      text = text + "Participants, " + e.attendees.join(',');
+    }
+
 
     this.voiceService.fetchSpeechMp3(text, e.id).subscribe( (response: EventVoice)=>{
       console.log(response);

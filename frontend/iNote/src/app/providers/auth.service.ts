@@ -79,12 +79,13 @@ export class AuthService {
     // console.log(events)
 
     this.calenderItems = events.result.items;
+    return events.result.items;
 
   }
 
   async insertEvent(event) {
     const formData = event;
-    const insert = await gapi.client.calendar.events.insert({
+    let data = {
       calendarId: 'primary',
       start: {
         dateTime: formData.start,
@@ -97,7 +98,8 @@ export class AuthService {
       summary: formData.title,
       description: formData.description,
       attendees: formData.attendees
-    })
+    }
+    const insert = await gapi.client.calendar.events.insert(data)
 
     await this.getCalendar();
   }

@@ -13,7 +13,7 @@
       <div *ngIf="auth.user | async as user">
         <h1>Hello, {{ user.displayName }}!</h1>
         <hr class="my-4 bg-light w-25">
-        <button class="btn btn-primary" (click)="auth.getCalendar();">Retrive events</button>
+        <button class="btn btn-primary" (click)="auth.getCalendar();localRetrieve()">Retrive events</button>
       </div>
     </div>
   </div>

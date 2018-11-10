@@ -37,8 +37,8 @@ export class AddNewComponent implements OnInit {
   createEvent() {
     const formData = this.eventForm.value;
     console.log(formData);
-    formData.start = new Date(formData.start).toISOString();
-    formData.end = new Date(formData.end).toISOString();
+    formData.start = new Date(formData.start.split().map( (item)=> parseInt(item)  ) ).toISOString();
+    formData.end = new Date(formData.end.split().map( (item)=> parseInt(item)  )  ).toISOString();
 
     if (this.eventForm.valid){
       this.auth.insertEvent(formData)
