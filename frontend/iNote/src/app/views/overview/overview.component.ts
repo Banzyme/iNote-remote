@@ -35,6 +35,7 @@ export class OverviewComponent implements OnInit {
   constructor(private voiceService: TextToSpeechService, public auth: AuthService) { }
 
   ngOnInit() {
+    this.auth.getCalendar();
     this.setInterval();
     this.quedVoice = Array.from(this.events);
   }

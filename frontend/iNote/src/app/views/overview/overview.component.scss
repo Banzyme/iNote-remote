@@ -1,0 +1,42 @@
+@import '../../../theme.scss';
+
+.list-group-item{
+    transition: all 400ms ease-in;
+}
+
+.list-group-item:hover{
+    background: $primary;
+    color: white !important;
+}
+
+
+.jumbotron{
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: white;
+    // background: url('/assets/img/science.jpg');
+    background: url('https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=ed86b965826826e3dd08bb3b33726543&auto=format&fit=crop&w=707&q=80');
+}
+
+.profile-img{
+    img{
+        border-radius: 50%;
+    }
+}
+
+
+#attendees{
+    list-style: none;
+    overflow: hidden;
+
+    li{
+        float: left;
+        margin: 0 1em;
+        a{
+            display: block;
+            text-align: center;
+            padding: 0.5em;
+        }
+    }
+}
