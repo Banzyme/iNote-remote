@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { EventsService } from '../../providers/events.service';
+import { AuthService } from '../../providers/auth.service';
+import { from } from 'rxjs';
 
 @Component({
   selector: 'app-add-new',
@@ -15,24 +18,60 @@ export class AddNewComponent implements OnInit {
   eventForm: FormGroup;
 
 
-  constructor(private fb: FormBuilder, private eventService: EventsService) { }
+  constructor(private fb: FormBuilder, private eventService: EventsService,
+    public auth: AuthService, private router: Router) { }
 
   ngOnInit() {
     this.eventForm = this.fb.group({
       title: ['', [Validators.required]],
-      date: ['', [Validators.required]],
+      start: ['', [Validators.required]],
+      end: ['', Validators.required],
       description: ['', [Validators.required]],
-      highPriority: [false]
+      attendees: this.fb.array([]),
+      locked: [false]
     });
 
   }
 
 
-  createEvent(){
+  createEvent() {
     const formData = this.eventForm.value;
-    const eventId = Math.random().toString(36).substring(2);;
+    console.log(formData);
+    formData.start = new Date(formData.start).toISOString();
+    formData.end = new Date(formData.end).toISOString();
 
-    this.eventService.saveEvent(formData, eventId );
+    if (this.eventForm.valid){
+      this.auth.insertEvent(formData)
+        .then(()=>{
+          console.log("Event saved!");
+          this.eventForm.reset();
+          this.router.navigate(['']);
+        })
+        .catch( error=>{
+          console.log("Something bad happened: ", error);
+        });
+    }
   }
+
+
+  // Helpers
+  get attendeeForm() {
+    return this.eventForm.get('attendees') as FormArray
+  }
+
+  addAttendee() {
+    const p = this.fb.group({
+      email: [],
+      displayName: [],
+      organiser: [false],
+    })
+
+    this.attendeeForm.push(p);
+  }
+
+  deleteAttendee(i) {
+    this.attendeeForm.removeAt(i)
+  }
+
 
 }

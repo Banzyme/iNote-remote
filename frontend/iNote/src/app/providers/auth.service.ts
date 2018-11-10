@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from "@angular/fire/auth";
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AngularFirestore} from '@angular/fire/firestore';
 import * as firebase from 'firebase/app';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { google } from 'googleapis';
 import { auth } from 'firebase/app';
 
 
@@ -58,26 +57,6 @@ export class AuthService {
 
 
 
-
-  // googleSignIn() {
-  //   console.log("GoogleSignIN");
-  //   return this.af_auth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
-  //     .then(res => {
-  //       console.log(res);
-  //       this.AccessToken = res.credential['accessToken'];
-  //       console.log("Access token: ", this.AccessToken);
-  //       this.isLoggedIn = true;
-  //       this.router.navigateByUrl('/inote/home');
-
-  //     })
-  //     .catch(error => {
-  //       console.log(error.message);
-  //     });
-
-
-  // }
-
-
   logout() {
     this.isLoggedIn = false;
     this.af_auth
@@ -86,6 +65,8 @@ export class AuthService {
       .then(() => { this.router.navigate(['']) })
   }
 
+
+  // Retrive the next 10 events from calender
   async getCalendar() {
     const events = await gapi.client.calendar.events.list({
       calendarId: 'primary',
@@ -95,34 +76,33 @@ export class AuthService {
       maxResults: 10,
       orderBy: 'startTime'
     })
-
-    console.log(events)
+    // console.log(events)
 
     this.calenderItems = events.result.items;
 
   }
 
-  async insertEvent() {
+  async insertEvent(event) {
+    const formData = event;
     const insert = await gapi.client.calendar.events.insert({
       calendarId: 'primary',
       start: {
-        dateTime: this.hoursFromNow(2),
-        timeZone: 'America/Los_Angeles'
+        dateTime: formData.start,
+        timeZone: 'Africa/Johannesburg'
       },
       end: {
-        dateTime: this.hoursFromNow(3),
-        timeZone: 'America/Los_Angeles'
+        dateTime: formData.end,
+        timeZone: 'Africa/Johannesburg'
       },
-      summary: 'Have Fun!!!',
-      description: 'Do some cool stuff and have a fun time doing it'
+      summary: formData.title,
+      description: formData.description,
+      attendees: formData.attendees
     })
 
     await this.getCalendar();
   }
 
   // util functions
-  // ... helper functions
-
   hoursFromNow = (n) => new Date(Date.now() + n * 1000 * 60 * 60).toISOString();
 
 }
