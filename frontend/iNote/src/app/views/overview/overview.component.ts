@@ -44,8 +44,8 @@ export class OverviewComponent implements OnInit {
       for(let event of this.events){
         let res = event.dateTime.getTime() - now;
 
-        if( Math.abs(res)>0) {       /// Play voice not if time-delta < 5 mins
-          this.playerController();
+        if( Math.abs(res)<0) {       /// Play voice not if time-delta < 5 mins
+          this.playEventVoiceNote(event);
         }
       }
 
@@ -53,7 +53,7 @@ export class OverviewComponent implements OnInit {
   }
 
   async playerController(){
-    await this.playEventVoiceNote(event);
+    await this.audio.play();
   }
 
    playEventVoiceNote(e){
@@ -64,7 +64,8 @@ export class OverviewComponent implements OnInit {
       if( response.status == 200){
         this.audio.src = response.url;
         this.audio.load();
-        this.audio.play();
+        this.playerController();
+        
       }
     }, (error)=>{
       console.log(error);
