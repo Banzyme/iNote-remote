@@ -16,44 +16,57 @@ class EventVoice{
   styleUrls: ['./overview.component.scss']
 })
 export class OverviewComponent implements OnInit {
+  quedVoice = [];
   today = new Date();
-  time_1 = new Date(2018, 11,10,4, 12 );
-  time_2 = new Date(2018, 11,10,4, 11);
-  time_3 = new Date(2018, 11,10,4, 15);
+  time_1 = new Date(2018, 11,10,14, 20  );
+  time_2 = new Date(2018, 11,10,14, 59);
+  time_3 = new Date(2018, 11,10,14, 15);
 
   // Audio object
   audio = new Audio()
 
   events = [
-    { title: 'Interview with Isazi',id:'111', dateTime: this.time_1, venue: 'Skype', attending: 'J Math'  },
-    { title: 'Morning scrums',id:'112', dateTime: this.time_2, venue: 'Rivonia' ,attending: 'G HUnt'   },
-    { title: 'Finish assessment', id:'113', dateTime: this.time_3, venue: 'Home' ,attending: 'N Ndou'   },
+    { title: 'Interview with Isazi',id:'111', dateTime: this.time_1, venue: 'Skype', attending: 'J Math', eventVoiceSrc: ""  },
+    { title: 'Morning scrums',id:'112', dateTime: this.time_2, venue: 'Rivonia' ,attending: 'G HUnt', eventVoiceSrc: ""    },
+    { title: 'Finish assessment', id:'113', dateTime: this.time_3, venue: 'Home' ,attending: 'N Ndou', eventVoiceSrc: ""   },
 
   ]
-
+    // copy events array
   constructor(private voiceService: TextToSpeechService, public auth: AuthService) { }
 
   ngOnInit() {
     this.setInterval();
+    this.quedVoice = Array.from(this.events);
   }
 
    setInterval(){
      setInterval( ()=>{
-      const now = this.today.getTime();
+      let now = new Date();
+      // this.quedVoice = this.events.concat([]);
+      for( let event in this.quedVoice ){
+        
 
-      for(let event of this.events){
-        let res = event.dateTime.getTime() - now;
+        let res = this.quedVoice[event].dateTime.getMinutes() - now.getMinutes();
 
-        if( Math.abs(res)<0) {       /// Play voice not if time-delta < 5 mins
-          this.playEventVoiceNote(event);
+        if( Math.abs(res)<=5) {   /// Play voice not if time-delta < 5 mins
+          console.log(res);
+                   
+          this.playEventVoiceNote(  this.quedVoice[event] );
+          this.quedVoice.splice( parseInt(event) , 1)
         }
+
       }
 
     },3000 );
   }
 
-  async playerController(){
-    await this.audio.play();
+  playerController(e){
+     this.audio.play();
+
+     setTimeout(()=>{
+       e.eventVoiceSrc = null;
+     }, 300000); 
+    //  Delete voice note after 5 mins
   }
 
    playEventVoiceNote(e){
@@ -62,9 +75,9 @@ export class OverviewComponent implements OnInit {
     this.voiceService.fetchSpeechMp3(text, e.id).subscribe( (response: EventVoice)=>{
       console.log(response);
       if( response.status == 200){
-        this.audio.src = response.url;
+        this.audio.src = e.eventVoiceSrc = response.url;
         this.audio.load();
-        this.playerController();
+        this.playerController(e);
         
       }
     }, (error)=>{
