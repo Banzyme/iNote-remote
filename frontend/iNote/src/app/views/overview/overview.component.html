@@ -38,10 +38,10 @@
         <div class="event-card col-lg-9">
           <a id="{{item.id}}" *ngFor="let item of auth.calenderItems" class="list-group-item border border-primary list-group-item-action flex-column align-items-start my-4">
             <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-1">{{ item.summary }}</h5>
+              <h4 class="mb-1">{{ item.summary }}</h4>
               <small>{{ item.location }}</small>
             </div>
-            <p class="mb-1 text-center"><span>{{ item.start.dateTime | date:'EEEE h:mm:ss a'}}</span></p>
+            <p class="my-4 text-center"><span id="mid-text">{{ item.start.dateTime | date:'EEEE h:mm:ss a'}}</span></p>
             <!-- <button class="btn" (click)="playEventVoiceNote(item)">Test me</button> -->
             <div class="row px-4"><small><b>Attendees:</b></small>
               <ul id="attendees">
