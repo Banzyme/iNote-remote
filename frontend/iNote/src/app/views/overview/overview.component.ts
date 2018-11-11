@@ -20,20 +20,10 @@ export class OverviewComponent implements OnInit {
   quedVoice: any[];
   calenderItems: any[];
   today = new Date();
-  time_1 = new Date(2018, 11, 10, 14, 30);
-  time_2 = new Date(2018, 11, 10, 14, 59);
-  time_3 = new Date(2018, 11, 10, 14, 25);
 
   // Audio object
-  audio = new Audio()
+  audio = new Audio();
 
-  events = [
-    { title: 'Interview with Isazi', id: '111', dateTime: this.time_1, venue: 'Skype', attending: 'J Math', eventVoiceSrc: "" },
-    { title: 'Morning scrums', id: '112', dateTime: this.time_2, venue: 'Rivonia', attending: 'G HUnt', eventVoiceSrc: "" },
-    { title: 'Finish assessment', id: '113', dateTime: this.time_3, venue: 'Home', attending: 'N Ndou', eventVoiceSrc: "" },
-
-  ]
-  // copy events array
   constructor(private voiceService: TextToSpeechService, public auth: AuthService, private router: Router) {
 
   }
@@ -41,8 +31,8 @@ export class OverviewComponent implements OnInit {
   ngOnInit() {
   }
 
-  localRetrieve() {
-    this.auth.getCalendar()
+  async localRetrieve() {
+    await this.auth.getCalendar()
       .then((calender) => {
         console.log("Returned cal items: ", calender);
         this.quedVoice = Array.from(this.auth.calenderItems);
@@ -60,11 +50,8 @@ export class OverviewComponent implements OnInit {
 
 
         let res = new Date(this.quedVoice[event].start.dateTime).getMinutes() - now.getMinutes();
-        console.log(res);
 
-        if (Math.abs(res) <= 5) {   /// Play voice not if time-delta < 5 mins
-          console.log(res);
-
+        if (res<=5 && res>0) {   /// Play voice not if time-delta < 5 mins
           this.playEventVoiceNote(this.quedVoice[event]);
           this.quedVoice.splice(parseInt(event), 1)
         }
@@ -110,7 +97,7 @@ export class OverviewComponent implements OnInit {
 
   navigateToDetail(event){
     let eventId = event.target.id;
-    this.router.navigateByUrl('/inote/add/'+ eventId);
+    this.router.navigateByUrl('/inote/update/'+ eventId);
   }
 
 }

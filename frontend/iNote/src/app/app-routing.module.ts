@@ -4,6 +4,7 @@ import { IndexComponent } from './views/index/index.component';
 import { OverviewComponent } from './views/overview/overview.component';
 import { AddNewComponent } from './views/add-new/add-new.component';
 import { LoginComponent } from './views/login/login.component';
+import { UpdateComponent } from './views/update/update.component';
 
 const routes: Routes = [
   {path: '', redirectTo:'inote', pathMatch: 'full'},
@@ -12,7 +13,7 @@ const routes: Routes = [
     {path: 'home', component: OverviewComponent},
     {path: 'login', component: LoginComponent},
     {path: 'add', component: AddNewComponent},
-    {path: 'add/:id', component: AddNewComponent}
+    {path: 'update/:id', component: UpdateComponent}
   ]},
 ];
 

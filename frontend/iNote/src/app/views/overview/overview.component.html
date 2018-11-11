@@ -41,12 +41,12 @@
               <h4 class="mb-1">{{ item.summary }}</h4>
               <small>{{ item.location }}</small><br>
             </div>
-            <article>
-              {{item.description}}
-            </article>
+            <span innerHtml="{{item.description}}" >
+              
+            </span>
             <p class="my-4 text-center"><i class="far fa-clock mr-1"></i><span id="mid-text">{{ item.start.dateTime | date:'EEEE h:mm:ss a'}}</span></p>
             <!-- <button class="btn" (click)="playEventVoiceNote(item)">Test me</button> -->
-            <div class="row px-4"><small><b>Attendees:</b></small>
+            <div class="mx-auto w-100 p-4"><small><b>Attendees:</b></small>
               <ul id="attendees">
                 <li *ngFor="let member of item.attendees">
                   {{ member.displayName }}

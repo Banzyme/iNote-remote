@@ -18,6 +18,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 import { environment } from '../environments/environment';
 import { LoginComponent } from './views/login/login.component';
+import { UpdateComponent } from './views/update/update.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { LoginComponent } from './views/login/login.component';
     AddNewComponent,
     NavComponent,
     FooterComponent,
-    LoginComponent
+    LoginComponent,
+    UpdateComponent
   ],
   imports: [
     BrowserModule, FormsModule, ReactiveFormsModule, HttpClientModule,

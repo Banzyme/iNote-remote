@@ -16,6 +16,7 @@ declare var gapi: any;
 export class AuthService {
   user: Observable<firebase.User>;
   calenderItems: any[];
+  calenderEvents: Observable<any[]>;
 
   currentUser: firebase.User;
   isLoggedIn = false;
@@ -29,8 +30,8 @@ export class AuthService {
 
 
   //  Google api client config
-  initClient() {
-    gapi.load('client', () => {
+  async initClient() {
+     await gapi.load('client', () => {
       console.log('loaded client');
 
       gapi.client.init({
@@ -42,6 +43,8 @@ export class AuthService {
 
       gapi.client.load('calendar', 'v3', () => console.log('loaded calendar'));
     });
+
+    return "Calender api ready."
   }
 
 
@@ -80,6 +83,7 @@ export class AuthService {
     // console.log(events)
 
     this.calenderItems = events.result.items;
+    this.calenderEvents = events.result.items;
     return events.result.items;
 
   }
@@ -89,9 +93,17 @@ export class AuthService {
       calendarId: 'primary',
       eventId: id
     })
+    return event.result
+  }
 
-    console.log(event);
-
+  async updatevent(id, data){
+    const event = await gapi.client.calendar.events.update({
+      calendarId: 'primary',
+      eventId: id,
+      summary: data.title,
+      notes: data.description,
+      attendees: data.attendees,
+    })
     return event.result
   }
 
@@ -114,6 +126,14 @@ export class AuthService {
     const insert = await gapi.client.calendar.events.insert(data)
 
     await this.getCalendar();
+  }
+
+  async eventDelete(id){
+    const event = await gapi.client.calendar.events.delete({
+      calendarId: 'primary',
+      eventId: id.toString()
+    })
+    return "Succesfully deleted"
   }
 
   // util functions

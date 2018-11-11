@@ -1,0 +1,72 @@
+<div id="new-events">
+  <div class="container">
+    <!-- Event form -->
+    <h2 class="text-center mt-4 heading">Update event
+      
+      <a (click)="deleteEvent($event)" id="{{eventDetails.id}}" data-toggle="tooltip" data-placement="top" title="Delete event"><i  class="fas fa-trash  text-secondary ml-3"></i></a>
+    
+    </h2>
+
+    <form class="my-5" [formGroup]="eventForm" (ngSubmit)="createEvent()">
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="title">Title</label>
+          <input type="email" class="form-control" [(ngModel)]="eventDetails.summary" id="title" placeholder="e.g. Call Ndamulelo"
+            formControlName="title">
+        </div>
+        <div class="form-group col-md-6">
+          <label for="date-start">From __ </label>
+          <input type="text" class="form-control" id="date-end" [(ngModel)]="eventDetails.start" placeholder=""
+            formControlName="start" disabled>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="date-end">To __ </label>
+        <input type="text" class="form-control" id="date-end" placeholder="" [(ngModel)]="eventDetails.end"
+          formControlName="end" disabled>
+      </div>
+
+
+      <div class="form-group">
+        <label for="event-notes">Notes</label>
+        <textarea class="form-control" placeholder="(optional)" id="event-notes" rows="3" [(ngModel)]="eventDetails.description"
+          formControlName="description"></textarea>
+      </div>
+
+      <hr>
+      <h4 class="my-2"> Attendees</h4>
+      <button class="btn" (click)="addAttendee();">Add participant</button>
+
+      <div class="form-group mt-4" formArrayName="attendees">
+        <div *ngFor="let person of attendeeForm.controls; let i=index" [formGroupName]="i">
+
+          <div class="form-row">
+            <div class="form-group md-6">
+              <label for="attendee-name">Attendee Name </label>
+              <input type="text" class="form-control" id="attendee-nam" placeholder="" formControlName="displayName">
+            </div>
+            <div class="form-group md-6 ml-2">
+              <label for="attendee-email">Attendee email </label>
+              <input type="text" class="form-control" id="attendee-email" placeholder="" formControlName="email">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="organiser-check" formControlName="organiser">
+              <label class="form-check-label" for="gridCheck">
+                Organiser?
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr class="mb-4">
+
+      <button type="submit" class="btn btn-primary" id="{{eventDetails.id}}" (click)="updateEvent($event);" [disabled]="!eventForm.valid">Update
+        event</button>
+      <button type="button" routerLink="/inote/home" class="btn btn-danger mx-1">Cancel</button>
+    </form>
+
+    <!-- /Event form -->
+  </div>
+</div>
