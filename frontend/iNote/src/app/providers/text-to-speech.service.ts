@@ -12,7 +12,7 @@ class EventVoice{
   providedIn: 'root'
 })
 export class TextToSpeechService {
-  apiUrl = 'http://127.0.0.1:8000/api/';
+  apiUrl = 'https://inote-api.herokuapp.com/api/';
 
   constructor(private http: HttpClient) { }
 
