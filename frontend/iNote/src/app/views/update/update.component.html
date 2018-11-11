@@ -7,7 +7,7 @@
     
     </h2>
 
-    <form class="my-5" [formGroup]="eventForm" (ngSubmit)="createEvent()">
+    <form class="my-5" [formGroup]="eventForm" (ngSubmit)="updateEvent()">
       <div class="form-row">
         <div class="form-group col-md-6">
           <label for="title">Title</label>
@@ -62,7 +62,7 @@
       </div>
       <hr class="mb-4">
 
-      <button type="submit" class="btn btn-primary" id="{{eventDetails.id}}" (click)="updateEvent($event);" [disabled]="!eventForm.valid">Update
+      <button type="submit" class="btn btn-primary" id="{{eventDetails.id}}" [disabled]="!eventForm.valid">Update
         event</button>
       <button type="button" routerLink="/inote/home" class="btn btn-danger mx-1">Cancel</button>
     </form>

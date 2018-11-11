@@ -54,8 +54,8 @@ export class UpdateComponent implements OnInit {
 
   }
 
-  updateEvent(event){
-    const id = event.target.id;
+  updateEvent(){
+    const id = this.eventDetails.id;
     const formData = this.eventForm.value;
 
     this.auth.updatevent(id, formData)
