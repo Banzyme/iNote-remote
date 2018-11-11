@@ -36,7 +36,7 @@
 
         <!-- Event card -->
         <div class="event-card col-lg-9">
-          <a id="{{item.id}}" *ngFor="let item of auth.calenderItems" class="list-group-item border border-primary list-group-item-action flex-column align-items-start my-4">
+          <a id="{{item.id}}" (click)="navigateToDetail($event)" *ngFor="let item of auth.calenderItems" class="list-group-item border border-primary list-group-item-action flex-column align-items-start my-4">
             <div class="d-flex w-100 justify-content-between">
               <h4 class="mb-1">{{ item.summary }}</h4>
               <small>{{ item.location }}</small><br>

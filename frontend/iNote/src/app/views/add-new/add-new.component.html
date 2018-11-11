@@ -7,22 +7,22 @@
       <div class="form-row">
         <div class="form-group col-md-6">
           <label for="title">Title</label>
-          <input type="email" class="form-control" id="title" placeholder="e.g. Call Ndamulelo" formControlName="title">
+          <input type="email" class="form-control"  [(ngModel)]="eventDetails.summary" id="title" placeholder="e.g. Call Ndamulelo" formControlName="title">
         </div>
         <div class="form-group col-md-6">
           <label for="date-start">From __ </label>
-          <input type="text" class="form-control" id="date-end" placeholder="" formControlName="start">
+          <input type="text" class="form-control" id="date-end" [(ngModel)]="eventDetails.start" placeholder="" formControlName="start">
         </div>
       </div>
       <div class="form-group">
         <label for="date-end">To __ </label>
-        <input type="text" class="form-control" id="date-end" placeholder="" formControlName="end">
+        <input type="text" class="form-control" id="date-end" placeholder="" [(ngModel)]="eventDetails.end" formControlName="end">
       </div>
 
 
       <div class="form-group">
         <label for="event-notes">Notes</label>
-        <textarea class="form-control" placeholder="(optional)" id="event-notes" rows="3" formControlName="description"></textarea>
+        <textarea class="form-control" placeholder="(optional)" id="event-notes" rows="3" [(ngModel)]="eventDetails.description" formControlName="description"></textarea>
       </div>
 
       <hr>

@@ -5,6 +5,7 @@ import * as firebase from 'firebase/app';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { auth } from 'firebase/app';
+import { identifierModuleUrl } from '@angular/compiler';
 
 
 declare var gapi: any;
@@ -81,6 +82,17 @@ export class AuthService {
     this.calenderItems = events.result.items;
     return events.result.items;
 
+  }
+
+  async getEvent(id){
+    const event = await gapi.client.calendar.events.get({
+      calendarId: 'primary',
+      eventId: id
+    })
+
+    console.log(event);
+
+    return event.result
   }
 
   async insertEvent(event) {
